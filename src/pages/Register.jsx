@@ -22,10 +22,16 @@ export default function Register() {
                 navigate('/login')
             }
         } catch(err) {
-
+            alert(`[ERROR] - ${err.message}`)
+            console.error(err.message)
         } finally {
             setLoading(false)
+            clearFields()
         }
+    }
+
+    const clearFields = () => {
+        setCredentials({ email: '', password: '', name: '', campus_id: '', program_course: '' })
     }
 
     return (
@@ -35,6 +41,7 @@ export default function Register() {
                     <div>
                         <h1>Register</h1>
                         <p>Create your account.</p>
+                        <p style={{ display: loading ? 'block' : 'none' }}>Loading, please wait...</p>
                     </div>
 
                     <div>
