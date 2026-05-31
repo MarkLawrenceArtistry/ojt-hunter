@@ -41,7 +41,7 @@ export default function Register() {
                     <div>
                         <h1>Register</h1>
                         <p>Create your account.</p>
-                        <p style={{ display: loading ? 'block' : 'none' }}>Loading, please wait...</p>
+                        <p style={{ display: loading ? 'block' : 'none' }}>Loading, please wait a few seconds...</p>
                     </div>
 
                     <div>
