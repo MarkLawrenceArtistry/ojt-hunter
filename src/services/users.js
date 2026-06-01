@@ -20,10 +20,22 @@ export const register = async (credentials) => {
 
     if (error) {
         console.error(error);
-        return;
+        throw error;
     }
 
     console.log(data)
     return data
 
+}
+
+export const login = async (credentials) => {
+    const { data, error } = await supabase.auth.signInWithPassword(credentials)
+
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    console.log(data)
+    return data
 }

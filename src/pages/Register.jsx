@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // SERVICES/API
-import { supabase } from "../services/supabase";
 import { register } from "../services/users";
 
 export default function Register() {
