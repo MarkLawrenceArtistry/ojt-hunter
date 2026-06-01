@@ -2,6 +2,7 @@ import { supabase } from "./supabase";
 
 
 
+// AUTH
 export const register = async (credentials) => {
 
     // campus_id: 1 - CALOOCAN, 2 - VALENZUELA
