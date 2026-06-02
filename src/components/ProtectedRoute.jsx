@@ -1,9 +1,15 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { supabase } from "../services/supabase";
 
 export const ProtectedRoute = ({ children, allowedRoles }) => {
     const { user, role, loading } = useAuth()
+    const navigate = useNavigate()
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut()
+        navigate('/')
+    }
 
     if(loading) {
         return <h2 style={{ padding: "50px" }}>Loading access rights...</h2>
@@ -18,10 +24,7 @@ export const ProtectedRoute = ({ children, allowedRoles }) => {
             <div>
                 <h2>Database Error: Missing Role!</h2>
                 <p>Your user account is valid, but something is wrong</p>
-                <button onClick={() => {
-                    supabase.auth.signOut()
-                    window.location.href = "/"
-                }}>Logout</button>
+                <button onClick={handleLogout}>Logout</button>
             </div>
         )
     }
@@ -31,6 +34,7 @@ export const ProtectedRoute = ({ children, allowedRoles }) => {
             <div>
                 <h2>Unauthorized</h2>
                 <p>Your role is {role}. You need one of these roles: {allowedRoles.join(', ')}</p>
+                <button onClick={handleLogout}>Logout</button>
             </div>
         )
     }

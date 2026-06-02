@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
             if(event === 'SIGNED_IN') {
+                setLoading(true)
                 loadUserAndRole()
             } else if(event === 'SIGNED_OUT') {
                 setUser(null)

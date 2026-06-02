@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import AdminDashboard from './pages/AdminDashboard'
 
 import './App.css'
 import { AuthProvider } from './contexts/AuthContext'
@@ -19,8 +20,14 @@ function App() {
                     <Route path='/register' element={<Register/>} />
 
                     <Route path='/dashboard' element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={['student']}>
                             <Dashboard />
+                        </ProtectedRoute>
+                    } />
+
+                    <Route path='/admin-dashboard' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AdminDashboard />
                         </ProtectedRoute>
                     } />
                 </Routes>
