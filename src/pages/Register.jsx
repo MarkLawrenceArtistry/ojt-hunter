@@ -34,7 +34,7 @@ export default function Register() {
     }
 
     return (
-        <div>
+        <div style={{ display: 'flex' }}>
             <form onSubmit={handleSubmit}>
                 <div>
                     <div>
@@ -60,6 +60,38 @@ export default function Register() {
                     </div>
                 </div>
             </form>
+
+            <div>
+                <h2>Data Privacy Notice</h2>
+                
+                <p>
+                    In compliance with <strong>Republic Act No. 10173</strong>, also known as the <strong>Data Privacy Act of 2012 (DPA)</strong>, this website is committed to protecting and securing your personal information. We adhere strictly to the core principles mandated by the National Privacy Commission (NPC):
+                </p>
+                
+                <p>
+                    <strong>Transparency:</strong> We will always inform you about why and how your data is collected, used, and stored.<br />
+                    <strong>Legitimate Purpose:</strong> Your data will only be processed for specific, declared, and lawful reasons compatible with our services.<br />
+                    <strong>Proportionality:</strong> We only collect data that is strictly necessary for our website's functionality—nothing excessive.
+                </p>
+
+                <h3>Your Rights as a Data Subject</h3>
+                
+                <p>
+                    Under the DPA, you retain full ownership of your data and are entitled to the following rights:<br />
+                    1. <strong>Right to be Informed:</strong> Knowing if, how, and why your data is being processed.<br />
+                    2. <strong>Right to Access:</strong> Requesting a copy of the personal data we hold about you.<br />
+                    3. <strong>Right to Object:</strong> Refusing the processing of your data under certain conditions.<br />
+                    4. <strong>Right to Rectification:</strong> Requesting corrections to any inaccurate or outdated information in our system.<br />
+                    5. <strong>Right to Erasure or Blocking:</strong> Requesting the suspension, withdrawal, or removal of your personal data from our storage.
+                </p>
+
+                <hr />
+
+                <p>
+                    For a complete and more extensive breakdown of the official law, your rights, and how organizations must handle your information, please read the full text of the statutory act on the <a href="https://privacy.gov.ph/data-privacy-act/" target="_blank" rel="noopener noreferrer">Official National Privacy Commission Portal</a>.
+                </p>
+            </div>
         </div>
     )
+    
 }

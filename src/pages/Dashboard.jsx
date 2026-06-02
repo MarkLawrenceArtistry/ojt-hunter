@@ -1,7 +1,13 @@
-
+import { supabase } from "../services/supabase";
 
 export default function Dashboard() {
     return (
-        <h1>Welcome to Dashboard.</h1>
+        <div>
+            <h1>Welcome to Dashboard.</h1>
+            <button onClick={() => {
+                supabase.auth.signOut()
+                window.location.href = "/"
+            }}>Logout</button>
+        </div>
     )
 }
