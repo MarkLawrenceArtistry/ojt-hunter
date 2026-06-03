@@ -2,25 +2,32 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
 import { useEffect, useState } from "react";
 
-import { getAllJobListingsAdmin } from "../services/job-listings";
+import { getAllJobListingsAdmin, deleteJobListing } from "../services/job-listings";
 
 export default function AdminJobListings() {
     const [listings, setListings] = useState([])
     const navigate = useNavigate()
 
-    useEffect(() => {
-        const fetchJobListings = async () => {
-            const response = await getAllJobListingsAdmin()
-            console.log(response)
-            setListings(response)
-        }
+    const fetchJobListings = async () => {
+        const response = await getAllJobListingsAdmin()
+        console.log(response)
+        setListings(response)
+    }
 
+    useEffect(() => {
         fetchJobListings()
     }, [])
 
     const handleLogout = async () => {
         await supabase.auth.signOut()
         navigate('/')
+    }
+
+    const handleDelete = async (id) => {
+        if(confirm('Are you sure you want to delete this listing?')) {
+            const response = await deleteJobListing(id)
+            fetchJobListings()
+        }
     }
 
     return (
@@ -41,13 +48,14 @@ export default function AdminJobListings() {
                             <th>Apply URL</th>
                             <th>Created by</th>
                             <th>Created at</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {listings.length === 0 ? (
-                            <tr colSpan='4'>
-                                <td>No job listings yet. Create one!</td>
+                            <tr style={{ textAlign: 'center' }}>
+                                <td colSpan='8'>No job listings yet. Create one!</td>
                             </tr>
                         ) : (
                             listings.map((listing) => (
@@ -61,6 +69,11 @@ export default function AdminJobListings() {
                                     </td>
                                     <td>{listing.created_by}</td>
                                     <td>{listing.created_at}</td>
+                                    <td>
+                                        <div>
+                                            <button onClick={() => handleDelete(listing.id)}>Delete</button>
+                                        </div>
+                                    </td>
                                 </tr>
                             ))
                         )}
