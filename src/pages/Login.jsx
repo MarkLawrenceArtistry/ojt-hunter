@@ -24,6 +24,8 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        setLoading(true)
+
         try {
             const response = await login(credentials)
 
@@ -33,6 +35,8 @@ export default function Login() {
         } catch(err) {
             alert(`Invalid credentials: ${err.message}`)
             console.error(err.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -42,7 +46,7 @@ export default function Login() {
                 <div>
                     <div>
                         <h1>Login {role}</h1>
-                        <p>Log in your credentials to access the system.</p>
+                        <p>Log in your credentials to access the system. {loading ? 'Loading, please wait...' : ''}</p>
                     </div>
                     <div>
                         <input type="email" placeholder="Email.." value={credentials.email} onChange={(e) => setCredentials({...credentials, email: e.target.value})} required />

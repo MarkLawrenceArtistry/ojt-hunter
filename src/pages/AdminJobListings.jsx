@@ -1,7 +1,7 @@
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
 
-export default function AdminDashboard() {
+export default function AdminJobListings() {
     const navigate = useNavigate()
 
     const handleLogout = async () => {
@@ -11,8 +11,7 @@ export default function AdminDashboard() {
 
     return (
         <div>
-            <h1>Welcome to Admin Dashboard.</h1>
-            <button onClick={() => navigate('/admin-job-listings')}>Go to Job Listings</button>
+            <h1>Welcome to Admin Job Listings.</h1>
             <button onClick={handleLogout}>Logout</button>
         </div>
     )
