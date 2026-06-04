@@ -14,8 +14,10 @@ export default function Login() {
     useEffect(() => {
         if(user) {
             if(role === 'admin') {
+                alert("Login successful")
                 navigate('/admin-dashboard')
             } else if((role === 'student')) {
+                alert("Login successful")
                 navigate('/dashboard')
             }
         }
@@ -28,10 +30,6 @@ export default function Login() {
 
         try {
             const response = await login(credentials)
-
-            if(response) {
-                alert("Login successful")
-            }
         } catch(err) {
             alert(`Invalid credentials: ${err.message}`)
             console.error(err.message)
@@ -45,7 +43,7 @@ export default function Login() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <div>
-                        <h1>Login {role}</h1>
+                        <h1>Login</h1>
                         <p>Log in your credentials to access the system. {loading ? 'Loading, please wait...' : ''}</p>
                     </div>
                     <div>

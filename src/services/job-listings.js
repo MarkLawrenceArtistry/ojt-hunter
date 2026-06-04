@@ -14,6 +14,18 @@ export const getAllJobListingsAdmin = async () => {
     return data
 }
 
+export const createJobListing = async (formData) => {
+     const { data, error } = await supabase.from(table).insert(formData).select()
+    
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    console.log(data)
+    return data
+}
+
 export const deleteJobListing = async (id) => {
     if(!id) return
 
