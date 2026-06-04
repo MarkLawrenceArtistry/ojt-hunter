@@ -44,7 +44,7 @@ export const login = async (credentials) => {
 
 // STUDENTS CRUD
 export const getAllStudents = async () => {
-    const { data, error } = await supabase.from(table).select()
+    const { data, error } = await supabase.from(table).select().eq('role', 'student')
         
     if (error) {
         console.error(error);
