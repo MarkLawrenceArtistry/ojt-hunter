@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminJobListings from './pages/AdminJobListings'
+import AdminStudents from './pages/AdminStudents'
 
 import './App.css'
 import { AuthProvider } from './contexts/AuthContext'
@@ -35,6 +36,12 @@ function App() {
                     <Route path='/admin-job-listings' element={
                         <ProtectedRoute allowedRoles={['admin']}>
                             <AdminJobListings />
+                        </ProtectedRoute>
+                    } />
+
+                    <Route path='/admin-students' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AdminStudents />
                         </ProtectedRoute>
                     } />
                 </Routes>

@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-
+const table = "users"
 
 
 // AUTH
@@ -31,6 +31,21 @@ export const register = async (credentials) => {
 export const login = async (credentials) => {
     const { data, error } = await supabase.auth.signInWithPassword(credentials)
 
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    console.log(data)
+    return data
+}
+
+
+
+// STUDENTS CRUD
+export const getAllStudents = async () => {
+    const { data, error } = await supabase.from(table).select()
+        
     if (error) {
         console.error(error);
         throw error;
