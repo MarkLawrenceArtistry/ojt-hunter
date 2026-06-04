@@ -55,7 +55,7 @@ export default function AdminJobListings() {
                     <tbody>
                         {listings.length === 0 ? (
                             <tr style={{ textAlign: 'center' }}>
-                                <td colSpan='8'>No job listings yet. Create one!</td>
+                                <td colSpan='8'>No job listings yet. Create one above!</td>
                             </tr>
                         ) : (
                             listings.map((listing) => (
