@@ -13,9 +13,9 @@ export const AuthProvider = ({ children }) => {
 
         async function loadUserAndRole() {
             try {
-                const { data: { user }, error: authError } = await supabase.auth.getUser()
+                const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser()
 
-                if(authError || !user) {
+                if(authError || !currentUser) {
                     if(mounted) {
                         setUser(null)
                         setRole(null)
@@ -26,10 +26,10 @@ export const AuthProvider = ({ children }) => {
                 }
 
                 if(mounted) {
-                    setUser(user)
+                    setUser(currentUser)
                 }
 
-                const { data, error: roleError } = await supabase.from('users').select('role').eq('id', user.id).maybeSingle()
+                const { data, error: roleError } = await supabase.from('users').select('role').eq('id', currentUser.id).maybeSingle()
 
                 if(roleError) {
                     console.error(`[ERROR] Database role error: ${roleError}`)
@@ -51,12 +51,15 @@ export const AuthProvider = ({ children }) => {
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
             if(event === 'SIGNED_IN') {
-                setLoading(true)
-                loadUserAndRole()
+                if(mounted) {
+                    loadUserAndRole()
+                }
             } else if(event === 'SIGNED_OUT') {
-                setUser(null)
-                setRole(null)
-                setLoading(false)
+                if(mounted) {
+                    setUser(null)
+                    setRole(null)
+                    setLoading(false)
+                }
             }
         })
 
