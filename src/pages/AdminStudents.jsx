@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
 import { useEffect, useState } from "react";
 
-import { getAllStudents } from "../services/users";
+import { deleteStudent, getAllStudents } from "../services/users";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function AdminJobListings() {
@@ -22,6 +22,13 @@ export default function AdminJobListings() {
         navigate('/')
     }
 
+    const handleDelete = async (id) => {
+        if(confirm('Are you sure you want to delete this student?')) {
+            const response = await deleteStudent(id)
+            fetchStudents()
+        }
+    }
+
 
     return (
         <div>
@@ -29,7 +36,7 @@ export default function AdminJobListings() {
             <button onClick={handleLogout}>Logout</button>
             
             <br />
-            
+
             <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: "collapse" }}>
                 <thead>
                     <tr style={{ backgroundColor: '#eee' }}>
@@ -61,7 +68,7 @@ export default function AdminJobListings() {
                                 <td>{student.created_at}</td>
                                 <td>
                                     <div>
-                                        {/* <button onClick={() => handleDelete(student.id)}>Delete</button> */}
+                                        <button onClick={() => handleDelete(student.id)}>Delete</button>
                                     </div>
                                 </td>
                             </tr>
