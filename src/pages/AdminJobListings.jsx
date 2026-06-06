@@ -2,14 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
 import { useEffect, useState } from "react";
 
-import { getAllJobListingsAdmin, deleteJobListing, createJobListing } from "../services/job-listings";
+import { getAllJobListingsAdmin, deleteJobListing, createJobListing, getJobListing, updateJobListing } from "../services/job-listings";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function AdminJobListings() {
     const { user } = useAuth()
 
     const [listings, setListings] = useState([])
-    const [currentListing, setCurrentListing] = useState({ title: '', company: '', apply_url: '', description: '', created_by: user.id })
+    const [currentListing, setCurrentListing] = useState({ id: '', title: '', company: '', apply_url: '', description: '', created_by: user.id })
     const [formState, setFormState] = useState(1) 
     const navigate = useNavigate()
 
@@ -37,24 +37,17 @@ export default function AdminJobListings() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        let listingDescription = currentListing.description && currentListing.description.trim();
-        if (listingDescription === "") {
-            listingDescription = null;
-        }
-        setCurrentListing({...currentListing, description: listingDescription})
-        console.log(currentListing)
-
         try {
 
-            // if new data
-            // 1 = NEW, 2 = UPDATE
+            // 1 = NEW
+            // 2 = UPDATE
+
             if(formState === 1) {
                 const response = await createJobListing(currentListing)
                 alert(`Job listing created successfully. ${response}`)
-            } else {
-                // later
-                setFormState(2)
-                return
+            } else if(formState === 2) {
+                const response = await updateJobListing(currentListing)
+                alert(`Job listing updated successfully. ${response}`)
             }
 
             fetchJobListings()
@@ -66,8 +59,24 @@ export default function AdminJobListings() {
         }
     }
 
+    const handleUpdate = async (id) => {
+        try {
+            const listing = await getJobListing(id)
+            setCurrentListing({ id: id, title: listing.title, company: listing.company, apply_url: listing.apply_url, description: listing.description })
+            setFormState(2)
+        } catch(err) {
+            alert(`[ERROR] Getting task: ${err}`)
+            console.error(err)
+        }
+    }
+
     const handleClearFields = () => {
-        setCurrentListing({ title: '', company: '', apply_url: '', description: '', created_by: user.id })
+        setCurrentListing({ id: '', title: '', company: '', apply_url: '', description: '', created_by: user.id })
+    }
+
+    const handleResetForm = () => {
+        handleClearFields()
+        setFormState(1)
     }
 
     return (
@@ -83,18 +92,19 @@ export default function AdminJobListings() {
                         <h1>{formState === 1 ? "Add new listing" : "Update listing"}</h1>
 
                         <label>Title</label>
-                        <input type="text" placeholder="IT Intern" value={currentListing.title} onChange={(e) => setCurrentListing({...currentListing, title: e.target.value})} required /> <br />
+                        <input type="text" placeholder="IT Intern" value={currentListing.title} onChange={(e) => setCurrentListing({...currentListing, title: e.target.value})} required={formState === 1} /> <br />
 
                         <label>Company</label>
-                        <input type="text" placeholder="Apple Inc." value={currentListing.company} onChange={(e) => setCurrentListing({...currentListing, company: e.target.value})} required /> <br />
+                        <input type="text" placeholder="Apple Inc." value={currentListing.company} onChange={(e) => setCurrentListing({...currentListing, company: e.target.value})} required={formState === 1} /> <br />
 
                         <label>URL</label>
-                        <input type="text" placeholder="apple.com" value={currentListing.apply_url} onChange={(e) => setCurrentListing({...currentListing, apply_url: e.target.value})} required /> <br />
+                        <input type="text" placeholder="apple.com" value={currentListing.apply_url} onChange={(e) => setCurrentListing({...currentListing, apply_url: e.target.value})} required={formState === 1} /> <br />
 
                         <label>Description</label>
-                        <input type="text" placeholder="Apple Inc. is currrently looking for..." value={currentListing.description} onChange={(e) => setCurrentListing({...currentListing, description: e.target.value})} required /> <br />
+                        <input type="text" placeholder="Apple Inc. is currrently looking for..." value={currentListing.description} onChange={(e) => setCurrentListing({...currentListing, description: e.target.value})} required={formState === 1} /> <br />
 
                         <button type="submit">Submit</button>
+                        <button type="button" onClick={handleResetForm}>Clear Fields</button>
                     </form>
                 </div>
                 <div>
@@ -131,6 +141,7 @@ export default function AdminJobListings() {
                                         <td>{listing.created_at}</td>
                                         <td>
                                             <div>
+                                                <button onClick={() => handleUpdate(listing.id)} disabled={formState === 2}>Update</button>
                                                 <button onClick={() => handleDelete(listing.id)}>Delete</button>
                                             </div>
                                         </td>
