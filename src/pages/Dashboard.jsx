@@ -12,6 +12,8 @@ export default function Dashboard() {
     return (
         <div>
             <h1>Welcome to Dashboard.</h1>
+            <button onClick={() => navigate('/job-listings')}>Go to Job Listings</button>
+
             <button onClick={handleLogout}>Logout</button>
         </div>
     )

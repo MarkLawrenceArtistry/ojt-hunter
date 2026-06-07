@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import JobListings from './pages/JobListings'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminJobListings from './pages/AdminJobListings'
 import AdminStudents from './pages/AdminStudents'
@@ -24,6 +25,12 @@ function App() {
                     <Route path='/dashboard' element={
                         <ProtectedRoute allowedRoles={['student']}>
                             <Dashboard />
+                        </ProtectedRoute>
+                    } />
+
+                    <Route path='/job-listings' element={
+                        <ProtectedRoute allowedRoles={['student']}>
+                            <JobListings />
                         </ProtectedRoute>
                     } />
 
