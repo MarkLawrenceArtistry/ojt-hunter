@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { getAllJobListingsAdmin } from "../services/job-listings";
+import { addBookmark, getAllJobListingsAdmin } from "../services/job-listings";
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function JobListings() {
     const [listings, setListings] = useState([])
+    const navigate = useNavigate()
 
     const {user, role} = useAuth()
 
@@ -17,10 +19,26 @@ export default function JobListings() {
         fetchJobListings()
     }, [])
 
+    const handleBookmark = async (id) => {
+        try {
+            const newBookmark = {
+                student_id: user.id,
+                job_id: id
+            }
+
+            const response = await addBookmark(newBookmark)
+            alert('Added bookmark successfully.')
+        } catch(err) {
+            alert(`[ERROR] Adding bookmark: ${err}`)
+            console.error(err)
+        }
+    }
+
     return (
         <div>
             <div>
                 <h1>Welcome to Job Listings, {role}</h1>
+                <button onClick={() => navigate('/bookmarks')}>Go to Bookmarks</button>
             </div>
 
             <div>
@@ -38,6 +56,12 @@ export default function JobListings() {
                                 <br />
 
                                 <p>{listing.description}</p>
+
+                                <br />
+
+                                <div>
+                                    <button onClick={() => handleBookmark(listing.id)}>Save this job</button>
+                                </div>
                             </div>
                         ))
                     )}

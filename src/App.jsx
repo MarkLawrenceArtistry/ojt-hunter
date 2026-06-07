@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import JobListings from './pages/JobListings'
+import Bookmarks from './pages/Bookmarks'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminJobListings from './pages/AdminJobListings'
 import AdminStudents from './pages/AdminStudents'
@@ -31,6 +32,12 @@ function App() {
                     <Route path='/job-listings' element={
                         <ProtectedRoute allowedRoles={['student']}>
                             <JobListings />
+                        </ProtectedRoute>
+                    } />
+
+                    <Route path='/bookmarks' element={
+                        <ProtectedRoute allowedRoles={['student']}>
+                            <Bookmarks />
                         </ProtectedRoute>
                     } />
 
