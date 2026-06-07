@@ -109,8 +109,8 @@ export const addBookmark = async (payload) => {
     return data
 }
 
-export const getAllBookmarks = async () => {
-    const { data, error } = await supabase.from('bookmarks').select()
+export const getAllBookmarks = async (id) => {
+    const { data, error } = await supabase.from('bookmarks').select().eq('student_id', id)
     
     if (error) {
         console.error(error);

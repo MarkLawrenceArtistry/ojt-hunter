@@ -18,7 +18,7 @@ export default function Register() {
 
             if(response) {
                 alert('Register successful! Kindly check your email.')
-                navigate('/login')
+                navigate('/')
             }
         } catch(err) {
             alert(`[ERROR] - ${err.message}`)

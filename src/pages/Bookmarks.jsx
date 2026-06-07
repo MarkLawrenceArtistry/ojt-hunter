@@ -1,38 +1,79 @@
 import { useState, useEffect } from "react";
-import { getAllBookmarks } from "../services/job-listings";
+import { getAllBookmarks, getJobListing } from "../services/job-listings";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../services/supabase";
 
 export default function Bookmarks() {
+    const {user} = useAuth()
+    const navigate = useNavigate()
     const [bookmarks, setBookmarks] = useState([])
+    const [listings, setListings] = useState([])
+    const [loading, setLoading] = useState(null)
 
     const fetchBookmarks = async () => {
-        const response = await getAllBookmarks()
-        setBookmarks(response)
+        try {
+            const response = await getAllBookmarks(user.id)
+            setBookmarks(response)
+
+            await displayJobsViaBookmarks(response)
+        } catch(err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const displayJobsViaBookmarks = async (currentBookmarks) => {
+        const promises = currentBookmarks.map(async (bookmark) => {
+            return await getJobListing(bookmark.job_id)
+        })
+
+        const allListings = await Promise.all(promises)
+        setListings(allListings)
+    }
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut()
+        navigate('/')
     }
 
     useEffect(() => {
         fetchBookmarks()
     }, [])
 
+
+    if(loading) return <p>Loading, please wait...</p>
+
     return (
         <div>
             <div>
                 <h1>Welcome to Bookmarks</h1>
+
+                <button onClick={() => navigate('/job-listings')}>Go to Job Listings</button>
+                <button onClick={() => navigate('/dashboard')}>Go to Dashboard</button>
+                <button onClick={handleLogout}>Logout</button>
             </div>
 
             <div>
                 <div className="bookmarks-container">
-                    {/* Naka wrap sa parenthesis if gusto mo mag return or mag output ng something */}
                     {bookmarks.length === 0 ? (
                         <div>No job bookmark posted yet!</div>
                     ) : (
-                        bookmarks.map((bookmark) => (
-                            <div key={bookmark.id}>
-                                <h1>{bookmark.job_id}</h1>
-                                <p>{bookmark.student_id}</p>
+                        listings.map((listing) => (
+                            <div key={listing.id}>
+                                <h1>{listing.title}</h1>
+                                <p>{listing.company}</p>
+                                <a target="_blank" href={"https://" + listing.apply_url} rel="noreferrer">Click here</a>
+
+                                <br />
+
+                                <p>{listing.description}</p>
+
+                                <br />
+
                                 <div>
-                                    <button>Remove bookmark</button>
+                                    <button onClick={() => handleBookmark(listing.id)}>Save this job</button>
                                 </div>
                             </div>
                         ))

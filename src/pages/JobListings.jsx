@@ -2,22 +2,30 @@ import { useState, useEffect } from "react";
 import { addBookmark, getAllJobListingsAdmin } from "../services/job-listings";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../services/supabase";
 
 export default function JobListings() {
     const [listings, setListings] = useState([])
     const navigate = useNavigate()
-
+    const [loading, setLoading] = useState(null)
     const {user, role} = useAuth()
 
     const fetchJobListings = async () => {
-        const response = await getAllJobListingsAdmin()
-        console.log(response + listings)
-        setListings(response)
+        try {
+            const response = await getAllJobListingsAdmin()
+            console.log(response + listings)
+            setListings(response)
+        } catch(err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
     }
 
-    useEffect(() => {
-        fetchJobListings()
-    }, [])
+    const handleLogout = async () => {
+        await supabase.auth.signOut()
+        navigate('/')
+    }
 
     const handleBookmark = async (id) => {
         try {
@@ -34,11 +42,19 @@ export default function JobListings() {
         }
     }
 
+    useEffect(() => {
+        fetchJobListings()
+    }, [])
+
+    if(loading) return <p>Loading, please wait..</p>
+
     return (
         <div>
             <div>
                 <h1>Welcome to Job Listings, {role}</h1>
                 <button onClick={() => navigate('/bookmarks')}>Go to Bookmarks</button>
+                <button onClick={() => navigate('/dashboard')}>Go to Dashboard</button>
+                <button onClick={handleLogout}>Logout</button>
             </div>
 
             <div>
