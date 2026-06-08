@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllBookmarks, getJobListing } from "../services/job-listings";
+import { deleteBookmark, getAllBookmarks, getJobListing } from "../services/job-listings";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
@@ -38,6 +38,13 @@ export default function Bookmarks() {
         navigate('/')
     }
 
+    const handleDelete = async (id) => {
+        if(confirm('Are you sure you want to delete this bookmark?')) {
+            const response = await deleteBookmark(id)
+            fetchBookmarks()
+        }
+    }
+
     useEffect(() => {
         fetchBookmarks()
     }, [])
@@ -73,7 +80,7 @@ export default function Bookmarks() {
                                 <br />
 
                                 <div>
-                                    <button onClick={() => handleBookmark(listing.id)}>Save this job</button>
+                                    <button onClick={() => handleDelete(listing.id)}>Remove this bookmark</button>
                                 </div>
                             </div>
                         ))

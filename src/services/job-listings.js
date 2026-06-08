@@ -120,3 +120,17 @@ export const getAllBookmarks = async (id) => {
     console.log(data)
     return data
 }
+
+export const deleteBookmark = async (id) => {
+    if(!id) return
+
+    const { data, error } = await supabase.from('bookmarks').delete().eq("job_id", id).select()
+    
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    console.log(data)
+    return data
+}
