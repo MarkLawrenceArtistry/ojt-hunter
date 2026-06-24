@@ -39,20 +39,23 @@ export default function Login() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
+        <div className="bg-[#171717] text-white min-h-screen flex items-center justify-center">
+            <div className="bg-[#1f1f1f] pt-10 pb-10 pl-5 pr-5 rounded">
+                <form onSubmit={handleSubmit}>
                     <div>
-                        <h1>Login</h1>
-                        <p>Log in your credentials to access the system. {loading ? 'Loading, please wait...' : ''}</p>
+                        <div>
+                            <p className="text-xs text-[#a8b2b0] mb-2">OJT Hunter App </p>
+                            <h1 className="text-4xl mb-2">Login</h1>
+                            <p className="text-[#a8b2b0] mb-5">Log in your credentials to access the system. {loading ? 'Loading, please wait...' : ''}</p>
+                        </div>
+                        <div className="flex flex-col gap-1 mb-3">
+                            <input className="w-full bg-[#393939] border border-[#1f1f1f] p-2 rounded" type="email" placeholder="Email.." value={credentials.email} onChange={(e) => setCredentials({...credentials, email: e.target.value})} required />
+                            <input className="w-full bg-[#393939] border border-[#1f1f1f] p-2 rounded" type="password" placeholder="Password.." value={credentials.password} onChange={(e) => setCredentials({...credentials, password: e.target.value})} required />
+                        </div>
+                        <button className="w-full bg-[#006339] border-2 border-[#1c6948] hover:bg-[#00844d] hover:border-[#209160] rounded p-2 transition-colors" type="submit">Login</button>
                     </div>
-                    <div>
-                        <input type="email" placeholder="Email.." value={credentials.email} onChange={(e) => setCredentials({...credentials, email: e.target.value})} required />
-                        <input type="password" placeholder="Password.." value={credentials.password} onChange={(e) => setCredentials({...credentials, password: e.target.value})} required />
-                    </div>
-                    <button type="submit">Login</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     )
 }
