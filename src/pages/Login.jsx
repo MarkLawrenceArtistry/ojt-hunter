@@ -38,6 +38,12 @@ export default function Login() {
         }
     }
 
+    const handleRegister = (e) => {
+        e.preventDefault()
+
+        navigate('/register')
+    }
+
     return (
         <div className="bg-[#171717] text-white min-h-screen flex items-center justify-center">
             <div className="bg-[#1f1f1f] pt-10 pb-10 pl-5 pr-5 rounded">
@@ -53,6 +59,7 @@ export default function Login() {
                             <input className="w-full bg-[#393939] border border-[#1f1f1f] p-2 rounded" type="password" placeholder="Password.." value={credentials.password} onChange={(e) => setCredentials({...credentials, password: e.target.value})} required />
                         </div>
                         <button className="w-full bg-[#006339] border-2 border-[#1c6948] hover:bg-[#00844d] hover:border-[#209160] rounded p-2 transition-colors" type="submit">Login</button>
+                        <button className="w-full bg-gray rounded p-2" type="button" onClick={handleRegister}>Register</button>
                     </div>
                 </form>
             </div>
