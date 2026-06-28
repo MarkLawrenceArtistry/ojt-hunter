@@ -9,6 +9,7 @@ import Bookmarks from './pages/Bookmarks'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminJobListings from './pages/AdminJobListings'
 import AdminStudents from './pages/AdminStudents'
+import NotFound from './pages/NotFound'
 
 import './App.css'
 import { AuthProvider } from './contexts/AuthContext'
