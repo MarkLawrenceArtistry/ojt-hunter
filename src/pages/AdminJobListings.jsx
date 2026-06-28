@@ -11,12 +11,19 @@ export default function AdminJobListings() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [listings, setListings] = useState([])
     const [currentListing, setCurrentListing] = useState({ id: '', title: '', company: '', apply_url: '', description: '', created_by: user.id })
-    const [formState, setFormState] = useState(1) 
+    const [formState, setFormState] = useState(1)
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
     const fetchJobListings = async () => {
-        const response = await getAllJobListingsAdmin()
-        setListings(response)
+        try {
+            const response = await getAllJobListingsAdmin()
+            setListings(response)
+        } catch(err) {
+            console.error(err.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -79,6 +86,12 @@ export default function AdminJobListings() {
         handleClearFields()
         setFormState(1)
     }
+
+    if (loading) return (
+        <div className="bg-[#171717] min-h-screen flex items-center justify-center text-white">
+            <p>Loading jobs, please wait...</p>
+        </div>
+    )
 
     return (
         <div className="flex h-screen overflow-hidden">

@@ -9,15 +9,28 @@ export default function AdminJobListings() {
     const [students, setStudents] = useState([])
     const navigate = useNavigate()
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [loading, setLoading] = useState(true)
 
     const fetchStudents = async () => {
-        const response = await getAllStudents()
-        setStudents(response)
+        try {
+            const response = await getAllStudents()
+            setStudents(response)
+        } catch(err) {
+            console.error(err.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
         fetchStudents()
     }, [])
+
+    if (loading) return (
+        <div className="bg-[#171717] min-h-screen flex items-center justify-center text-white">
+            <p>Loading jobs, please wait...</p>
+        </div>
+    )
 
     const handleLogout = async () => {
         await supabase.auth.signOut()
@@ -30,7 +43,6 @@ export default function AdminJobListings() {
             fetchStudents()
         }
     }
-
 
     return (
         <div className="flex h-screen overflow-hidden">

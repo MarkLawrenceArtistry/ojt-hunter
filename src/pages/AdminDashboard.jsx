@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function AdminDashboard() {
     const navigate = useNavigate()
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+    const [loading, setLoading] = useState(true)
 
     const handleLogout = async () => {
         await supabase.auth.signOut()
